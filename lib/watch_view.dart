@@ -37,22 +37,26 @@ class WatchPainter extends CustomPainter {
       ..color = Colors.orange[300]
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 16;
+      ..strokeWidth = 6;
 
     var minHandBrush = Paint()
-      ..shader = RadialGradient(colors: [Colors.lightBlue, Colors.pink])
+      ..shader = RadialGradient(colors: [Color(0xFF748EF6), Color(0xFF77DDFF)])
           .createShader(Rect.fromCircle(center: center, radius: radius))
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 16;
+      ..strokeWidth = 6;
     var hourHandBrush = Paint()
-      ..color = Colors.orange[300]
+      ..shader = RadialGradient(colors: [Color(0xFFEA74AB), Color(0xFFC279FB)])
+          .createShader(Rect.fromCircle(center: center, radius: radius))
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 16;
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 6;
     canvas.drawCircle(center, radius - 40, fillBrush);
     canvas.drawCircle(center, radius - 40, outlineBrush);
-    canvas.drawCircle(center, 16, centerFillBrush);
     canvas.drawLine(center, Offset(100, 100), secondHandBrush);
+    canvas.drawLine(center, Offset(150, 100), minHandBrush);
+    canvas.drawLine(center, Offset(100, 150), hourHandBrush);
+    canvas.drawCircle(center, 16, centerFillBrush);
   }
 
   @override
