@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:watch/watch.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,8 +9,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        //primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Watch(),
