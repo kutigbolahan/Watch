@@ -11,10 +11,10 @@ class Watchview extends StatefulWidget {
 class _WatchviewState extends State<Watchview> {
   @override
   void initState() {
+    super.initState();
     Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {});
     });
-    super.initState();
   }
 
   @override
