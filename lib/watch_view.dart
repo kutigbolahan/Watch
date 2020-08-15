@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -9,18 +10,31 @@ class Watchview extends StatefulWidget {
 
 class _WatchviewState extends State<Watchview> {
   @override
+  void initState() {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: 300,
       width: 300,
-      child: CustomPaint(
-        painter: WatchPainter(),
+      child: Transform.rotate(
+        angle: -pi / 2,
+        child: CustomPaint(
+          painter: WatchPainter(),
+        ),
       ),
     );
   }
 }
 
 class WatchPainter extends CustomPainter {
+  var dateTime = DateTime.now();
+  //60sec
   @override
   void paint(Canvas canvas, Size size) {
     var centerX = size.width / 2;
@@ -28,7 +42,16 @@ class WatchPainter extends CustomPainter {
     var center = Offset(centerX, centery);
     var radius = min(centerX, centery);
     var fillBrush = Paint()..color = Color(0xFF444974);
+
     var centerFillBrush = Paint()..color = Color(0xFFEAECFF);
+    var secHandX = centerX + 80 * cos(dateTime.second * 6 * pi / 180);
+    var secHandy = centerX + 80 * sin(dateTime.second * 6 * pi / 180);
+    var minHandX = centerX + 80 * cos(dateTime.minute * 6 * pi / 180);
+    var minHandy = centerX + 80 * sin(dateTime.minute * 6 * pi / 180);
+    var hourHandX = centerX +
+        60 * cos((dateTime.hour * 30 + dateTime.minute * 0.5) * pi / 180);
+    var hourHandy = centerX +
+        60 * sin((dateTime.hour * 30 + dateTime.minute * 0.5) * pi / 180);
     var outlineBrush = Paint()
       ..color = Color(0xFFEAECFF)
       ..style = PaintingStyle.stroke
@@ -51,12 +74,29 @@ class WatchPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 6;
+    var dashBrush = Paint()
+      ..color = Color(0xFFEAECFF)
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 2;
     canvas.drawCircle(center, radius - 40, fillBrush);
     canvas.drawCircle(center, radius - 40, outlineBrush);
-    canvas.drawLine(center, Offset(100, 100), secondHandBrush);
-    canvas.drawLine(center, Offset(150, 100), minHandBrush);
-    canvas.drawLine(center, Offset(100, 150), hourHandBrush);
+    canvas.drawLine(center, Offset(hourHandX, hourHandy), hourHandBrush);
+
+    canvas.drawLine(center, Offset(minHandX, minHandy), minHandBrush);
+    canvas.drawLine(center, Offset(secHandX, secHandy), secondHandBrush);
     canvas.drawCircle(center, 16, centerFillBrush);
+
+    var outerCircleRadius = radius;
+    var innerCircleRadius = radius - 14;
+    for (double i = 0; i < 360; i += 12) {
+      var x1 = centerX + outerCircleRadius * cos(i * pi / 180);
+      var y1 = centerX + outerCircleRadius * sin(i * pi / 180);
+
+      var x2 = centerX + innerCircleRadius * cos(i * pi / 180);
+      var y2 = centerX + innerCircleRadius * sin(i * pi / 180);
+      canvas.drawLine(Offset(x1, y1), Offset(x2, y2), dashBrush);
+    }
   }
 
   @override
