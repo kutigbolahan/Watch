@@ -13,8 +13,13 @@ class _WatchviewState extends State<Watchview> {
   void initState() {
     super.initState();
     Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {});
+      // setState(() {});
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -40,7 +45,7 @@ class WatchPainter extends CustomPainter {
     var centerX = size.width / 2;
     var centery = size.height / 2;
     var center = Offset(centerX, centery);
-    var radius = min(centerX, centery);
+    var radius = max(centerX, centery);
     var fillBrush = Paint()..color = Color(0xFF444974);
 
     var centerFillBrush = Paint()..color = Color(0xFFEAECFF);
@@ -95,7 +100,7 @@ class WatchPainter extends CustomPainter {
 
       var x2 = centerX + innerCircleRadius * cos(i * pi / 180);
       var y2 = centerX + innerCircleRadius * sin(i * pi / 180);
-      canvas.drawLine(Offset(x1, y1), Offset(x2, y2), dashBrush);
+      // canvas.drawLine(Offset(x1, y1), Offset(x2, y2), dashBrush);
     }
   }
 
